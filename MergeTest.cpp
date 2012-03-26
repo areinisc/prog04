@@ -165,14 +165,15 @@ int main(int argc, const char* argv[]) {
 	    cout << endl << "Calling merge..." << endl;
 	    A->merge(*B);
 
+#ifdef VISUAL
+	    viz.refresh();
+#endif
+
 	    cout << endl << "After the merge, the first list has length " << A->size() << " with contents:" << endl;
 	    print(*A);
 	    cout << "After the merge, the second list has length " << B->size() << " with contents:" << endl;
 	    print(*B);
 
-#ifdef VISUAL
-	    viz.refresh();
-#endif
 
 	    cout << "About to check validity of all previous iterators..." << endl;
 	    bool good(true);

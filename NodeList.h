@@ -317,30 +317,42 @@ public:
      * transferred to.
      */
     void merge(NodeList& other) {
-        /*
-         * iterator1 set to this.head iterator2 set to other.head
-         * while iterator1 isn't at trailer
-         * if iterator2->element < iterator1->element
-         * then put iterator2's node in *this and walk iterator2
-         * else walk iterator1
-         *
-         * put remaining other in *this
-         */
-        iterator it1=this.head;
-        iterator it2=other.head;
-        while(it1->next!=trailer) {
-            if(it2->node->element < it1->node->element) {
-                it2->node->prev=it1->it1->node->prev;
-                it1->node->prev=it2->node;
-                it2->node->next=it1->node;
-                it2=other.head;
+        Node* first = header->next;
+        Node* second = other.header->next;
+        while (first != NULL) {
+            cout << "firstelem=" << first->elem << " secondelem=" << second->elem << endl;
+            if(second->elem < first->elem) {
+                first->prev->next = second;
+                second->prev = first->prev;
+                first->prev = second;
+                other.header->next = second->next;
+                second->next = first;
+                if(other.header->next != other.trailer)
+                    second = other.header->next;
+                else
+                    second = NULL;
             }
             else {
-                it1++;
+                if (first->next != NULL)
+                    first = first->next;
+                else
+                    first = NULL;
             }
         }
-        it1->node->next=it2->node;
-        it2->node->prev=it1->node;
+        while (second != NULL) {
+            first = trailer->prev;
+            first->next = second;
+            second->prev = first;
+            trailer->prev = second;
+            other.header->next = second->next;
+            if(second->next != other.trailer)
+                second = second->next;
+            else
+                second = NULL;
+        }
+        second = other.trailer;
+        second->prev->next = first->next;
+        second->prev = other.header;
     }
 
 };  // end of NodeList class
