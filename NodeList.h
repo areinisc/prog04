@@ -220,8 +220,8 @@ public:
 
     iterator begin() {
 	return iterator(header->next);
-    } Remix
- Remix
+    } 
+
     const_iterator begin() const {
 	return const_iterator(header->next);
     }
@@ -319,13 +319,28 @@ public:
     void merge(NodeList& other) {
         /*
          * iterator1 set to this.head iterator2 set to other.head
-         * while other isn't empty
+         * while iterator1 isn't at trailer
          * if iterator2->element < iterator1->element
          * then put iterator2's node in *this and walk iterator2
          * else walk iterator1
          *
          * put remaining other in *this
          */
+        iterator it1=this.head;
+        iterator it2=other.head;
+        while(it1->next!=trailer) {
+            if(it2->node->element < it1->node->element) {
+                it2->node->prev=it1->it1->node->prev;
+                it1->node->prev=it2->node;
+                it2->node->next=it1->node;
+                it2=other.head;
+            }
+            else {
+                it1++;
+            }
+        }
+        it1->node->next=it2->node;
+        it2->node->prev=it1->node;
     }
 
 };  // end of NodeList class
