@@ -317,42 +317,35 @@ public:
      * transferred to.
      */
     void merge(NodeList& other) {
-        Node* first = header->next;
-        Node* second = other.header->next;
-        while (first != NULL) {
-            cout << "firstelem=" << first->elem << " secondelem=" << second->elem << endl;
-            if(second->elem < first->elem) {
-                first->prev->next = second;
-                second->prev = first->prev;
-                first->prev = second;
-                other.header->next = second->next;
-                second->next = first;
-                if(other.header->next != other.trailer)
-                    second = other.header->next;
-                else
-                    second = NULL;
-            }
-            else {
-                if (first->next != NULL)
+        Node* first = header->next;             // Pointer to first elem of list 1
+        Node* second = other.header->next;      // Pointer to first elem of list 2
+        while (second != other.trailer) {
+            while (first != trailer) {
+                if(second->elem <= first->elem) {   // if ptr2 should merge in
+                    first->prev->next = second;
+                    second->prev = first->prev;
+                    first->prev = second;
+                    other.header->next = second->next;
+                    second = second->next;
+                    second->prev->next = first;
+                    ++n;                            // Don't forget to increment n!
+                    --other.n;
+                }
+                if(second->elem > first->elem)      // if ptr2 shouldn't merge in
                     first = first->next;
-                else
-                    first = NULL;
             }
-        }
-        while (second != NULL) {
-            first = trailer->prev;
+            first = trailer->prev;              // put the rest of list 2 in 1
             first->next = second;
             second->prev = first;
             trailer->prev = second;
             other.header->next = second->next;
-            if(second->next != other.trailer)
-                second = second->next;
-            else
-                second = NULL;
+            second->next = trailer;
+            trailer->prev = second;
+            second = other.header->next;
+            ++n;                                    // Don't forget to increment n!
+            --other.n;
         }
-        second = other.trailer;
-        second->prev->next = first->next;
-        second->prev = other.header;
+        other.trailer->prev = other.header;         // Force list 2 back together.
     }
 
 };  // end of NodeList class
