@@ -12,7 +12,7 @@ Date: 24 March 2012
 
 
 Summary:
-    My implementation of merge is fairly straightforward, and relies on two while loops that are nested. This may not be the most efficient implementation, but I'm fairly confident in its robustness.
+    My implementation of merge is fairly straightforward, and relies on two while loops that are nested. This may not be the most efficient implementation. Also, it pains me to admit this, but my code breaks during the simple case of the first list being empty. I'm not sure why this is so---my code should just jump to line 337 and work as normal.
     After setting up node pointers that point to the headers of both lists, I begin my nested while loops that check to see my pointers don't go to their list's trailers. If list two's first element belongs before list one's current element, then it's put in. The lists' element counts are updated to reflect the change. If the element from two doesn't yet belong in one, the pointer in list one is incremented. This procedure repeats until the first pointer is at the first list's trailer.
     From here, the remains of the second list (if there are any), will be put into the first list. For each insertion, the list counts are updated appropriately.
     Though it seems a rather graceless addition, I've found that it's necessary to piece the second list's trailer back to its header. (line 348)
